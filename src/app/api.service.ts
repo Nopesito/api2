@@ -35,10 +35,15 @@ export class ApiService {
     return this.http.post(this.apiURL + '/posts', post, this.httpOptions).pipe(
       retry(3)
     );
-
+      
   }
 
-  deletePost(id:any): Observable<any> {
+  updatePost(id:any, post:any): Observable<any> {
+    return this.http.put(this.apiURL + '/posts/' + id, post, this.httpOptions).pipe(retry(3));
+  }
+
+
+  deletePost(id: any): Observable<any> {
     return this.http.delete(this.apiURL + '/posts/' + id, this.httpOptions)
   }
 

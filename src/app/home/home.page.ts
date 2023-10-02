@@ -26,32 +26,37 @@ export class HomePage {
   };
 
   guardarPost() {
-    this.post.userId = this.user
-    this.api.postPosts(this.post);
-    this.obtenerPosts();
+    this.post.userId = this.user;
+    this.api.postPosts(this.post).subscribe((res) => {
+      this.obtenerPosts();
+    });
   };
 
-  eliminarPost(post:any) {
-    this.api.deletePost(post.id);
-  };
-
-  obtenerUsuarios(){
-    this.api.getUsers().subscribe((data)=>{
+  eliminarPost(post: any) {
+    this.api.deletePost(post.id).subscribe((data) => {
+      this.obtenerPosts();
+    });
+  }
+  obtenerUsuarios() {
+    this.api.getUsers().subscribe((data) => {
       this.users = data;
     })
   }
 
-  setPost(){
 
-  }
-
-  obtenerPosts(){
-    this.api.getPosts().subscribe((res)=>{
-      this.posts = res;
+  setPost(post: any) {
+    this.api.updatePost(post, post.id).subscribe((data) => {
+      this.obtenerPosts();
     })
   }
 
-  ionViewWillEnter(){
+  obtenerPosts() {
+    this.api.getPosts().subscribe((res) => {
+      this.posts = res//.filter((usu:any) => usu.userId == this.user);
+    })
+  }
+
+  ionViewWillEnter() {
     this.obtenerUsuarios();
     this.obtenerPosts();
   }
